@@ -155,7 +155,7 @@ module FriendlyId
       # @return String
       def approximate_ascii!(*args)
         @maps = (self.class.approximations + args + [:common]).flatten.uniq
-        @wrapped_string = normalize_utf8(:c).unpack("U*").map { |char| approx_char(char) }.flatten.pack("U*")
+        @wrapped_string = tidy_bytes.normalize_utf8(:c).unpack("U*").map { |char| approx_char(char) }.flatten.pack("U*")
       end
 
       # Removes leading and trailing spaces or dashses, and replaces multiple
@@ -175,7 +175,7 @@ module FriendlyId
       # Remove any non-word characters.
       # @return String
       def word_chars!
-        @wrapped_string = normalize_utf8(:c).unpack("U*").map { |char|
+        @wrapped_string = tidy_bytes.normalize_utf8(:c).unpack("U*").map { |char|
           case char
           # control chars
           when 0..31
